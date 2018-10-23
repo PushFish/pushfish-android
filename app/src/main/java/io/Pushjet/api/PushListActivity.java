@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import io.Pushjet.api.Async.FirstLaunchAsync;
 import io.Pushjet.api.Async.GCMRegistrar;
 import io.Pushjet.api.Async.ReceivePushAsync;
@@ -33,87 +32,39 @@ public class PushListActivity extends ListActivity {
     private BroadcastReceiver receiver;
     private SwipeRefreshLayout refreshLayout;
 
-    private SwipeRefreshLayout.OnRefreshListener refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
-        @Override
-        public void onRefresh() {
-            ReceivePushAsync receivePushAsync = new ReceivePushAsync(api, adapter);
-            receivePushAsync.setCallBack(new ReceivePushCallback() {
-                @Override
-                public void receivePush(ArrayList<PushjetMessage> msg) {
-                    refreshLayout.setRefreshing(false);
-                }
-            });
-            refreshLayout.setRefreshing(true);
-            receivePushAsync.execute();
-        }
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_push_list);
-
         this.api = new PushjetApi(getApplicationContext(), SettingsActivity.getRegisterUrl(this));
         this.db = new DatabaseHandler(getApplicationContext());
-        this.refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
-        this.refreshLayout.setEnabled(true);
-        this.refreshLayout.setOnRefreshListener(refreshListener);
-
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean firstLaunch = preferences.getBoolean("first_launch", true);
-        if(firstLaunch) {
+        boolean isFirstLaunch = preferences.getBoolean("first_launch", true);
+        if (isFirstLaunch) {
             SharedPreferences.Editor editor = preferences.edit();
             editor.putBoolean("first_launch", false);
             editor.apply();
-
             new FirstLaunchAsync().execute(getApplicationContext());
         }
-
-
-        adapter = new PushListAdapter(this);
-        setListAdapter(adapter);
-        this.getListView().setLongClickable(true);
-        this.getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
-                PushjetMessage message = (PushjetMessage) adapter.getItem(position);
-
-                MiscUtil.WriteToClipboard(message.getMessage(), "Pushjet message", getApplicationContext());
-                Toast.makeText(getApplicationContext(), "Copied message to clipboard", Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
-
-
-        GCMRegistrar mGCMRegistrar = new GCMRegistrar(getApplicationContext());
-        if (firstLaunch || mGCMRegistrar.shouldRegister()) {
-            if (mGCMRegistrar.checkPlayServices(this)) {
-                mGCMRegistrar.registerInBackground(firstLaunch);
-            } else {
-                finish();
-            }
-        }
-
-        receiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                updatePushList();
-            }
-        };
+        configureRefreshListener();
+        loadListView();
+        configureMessaging(isFirstLaunch);
+        configureBroadcastReceiver();
     }
 
     @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
-        if (adapter.getSelected() == position)
+    protected void onListItemClick(ListView listView, View view, int position, long id) {
+        super.onListItemClick(listView, view, position, id);
+        if (adapter.getSelected() == position) {
             adapter.clearSelected();
-        else
+        } else {
             adapter.setSelected(position);
+        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-
         registerReceiver(receiver, new IntentFilter("PushjetMessageRefresh"));
         registerReceiver(receiver, new IntentFilter("PushjetIconDownloaded"));
     }
@@ -121,7 +72,6 @@ public class PushListActivity extends ListActivity {
     @Override
     protected void onStop() {
         super.onStop();
-
         unregisterReceiver(receiver);
     }
 
@@ -137,7 +87,7 @@ public class PushListActivity extends ListActivity {
     }
 
     private void updatePushList() {
-        adapter.upDateEntries(new ArrayList<PushjetMessage>(Arrays.asList(db.getAllMessages())));
+        adapter.upDateEntries(new ArrayList<>(Arrays.asList(db.getAllMessages())));
     }
 
     @Override
@@ -161,5 +111,60 @@ public class PushListActivity extends ListActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void configureRefreshListener() {
+        this.refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        this.refreshLayout.setEnabled(true);
+        this.refreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        ReceivePushAsync receivePushAsync = new ReceivePushAsync(api, adapter);
+                        receivePushAsync.setCallBack(new ReceivePushCallback() {
+                            @Override
+                            public void receivePush(ArrayList<PushjetMessage> messages) {
+                                refreshLayout.setRefreshing(false);
+                            }
+                        });
+                        refreshLayout.setRefreshing(true);
+                        receivePushAsync.execute();
+                    }
+                });
+    }
+
+    private void loadListView() {
+        adapter = new PushListAdapter(this);
+        setListAdapter(adapter);
+        this.getListView().setLongClickable(true);
+        this.getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
+                PushjetMessage message = (PushjetMessage) adapter.getItem(position);
+
+                MiscUtil.WriteToClipboard(message.getMessage(), "Pushjet message", getApplicationContext());
+                Toast.makeText(getApplicationContext(), "Copied message to clipboard", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+    }
+
+    private void configureMessaging(Boolean isFirstLaunch) {
+        GCMRegistrar registrar = new GCMRegistrar(getApplicationContext());
+        if (isFirstLaunch || registrar.shouldRegister()) {
+            if (registrar.checkPlayServices(this)) {
+                registrar.registerInBackground(isFirstLaunch);
+            } else {
+                finish();
+            }
+        }
+    }
+
+    private void configureBroadcastReceiver() {
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                updatePushList();
+            }
+        };
     }
 }

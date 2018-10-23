@@ -24,25 +24,25 @@ import java.util.Date;
 public class PushListAdapter extends BaseAdapter {
 
     private Context context;
-    private LayoutInflater mLayoutInflater;
-    private ArrayList<PushjetMessage> entries = new ArrayList<PushjetMessage>();
-    private DateFormat df;
-    private int selected = -1;
+    private LayoutInflater layoutInflater;
+    private ArrayList<PushjetMessage> entries = new ArrayList<>();
+    private DateFormat dateFormat;
+    private int selectedIndex = -1;
 
     public PushListAdapter(Context context) {
         this.context = context;
-        this.mLayoutInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.df = new SimpleDateFormat("d MMM HH:mm"); // 7 jul 15:30
+        this.layoutInflater = LayoutInflater.from(context);
+        this.dateFormat = new SimpleDateFormat("d MMM HH:mm");
     }
 
     @Override
     public int getCount() {
-        return this.entries.size();
+        return entries.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return this.entries.get(position);
+        return entries.get(position);
     }
 
     @Override
@@ -54,13 +54,17 @@ public class PushListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         RelativeLayout itemView;
         if (convertView == null) {
-            itemView = (RelativeLayout) mLayoutInflater.inflate(
+            itemView = (RelativeLayout) layoutInflater.inflate(
                     R.layout.fragment_pushlist, parent, false
             );
         } else {
             itemView = (RelativeLayout) convertView;
         }
+        configureViewForPosition(itemView, position);
+        return itemView;
+    }
 
+    private void configureViewForPosition(View itemView, int position) {
         TextView dateText = (TextView) itemView.findViewById(R.id.push_date);
         TextView titleText = (TextView) itemView.findViewById(R.id.push_title);
         TextView descriptionText = (TextView) itemView.findViewById(R.id.push_description);
@@ -73,7 +77,7 @@ public class PushListAdapter extends BaseAdapter {
         Date pushDate = entries.get(position).getLocalTimestamp();
         Bitmap icon = entries.get(position).getService().getIconBitmapOrDefault(context);
 
-        dateText.setText(this.df.format(pushDate));
+        dateText.setText(this.dateFormat.format(pushDate));
         titleText.setText(title);
         descriptionText.setText(description);
         iconImage.setImageBitmap(icon);
@@ -84,20 +88,18 @@ public class PushListAdapter extends BaseAdapter {
         context.getTheme().resolveAttribute(android.R.attr.listPreferredItemHeight, value, true);
         ((WindowManager) (context.getSystemService(Context.WINDOW_SERVICE))).getDefaultDisplay().getMetrics(metrics);
 
-        int lineCount = selected == position ? descriptionText.getLineCount() : 0;
+        int lineCount = selectedIndex == position ? descriptionText.getLineCount() : 0;
         int minHeight = (int) TypedValue.complexToDimension(value.data, metrics);
         int prefHeight = (lineCount + 2) * descriptionText.getLineHeight();
         itemView.getLayoutParams().height = prefHeight > minHeight ? prefHeight : minHeight;
-
-        return itemView;
     }
 
     public int getSelected() {
-        return selected;
+        return selectedIndex;
     }
 
-    public void setSelected(int selected) {
-        this.selected = selected;
+    public void setSelected(int selectedIndex) {
+        this.selectedIndex = selectedIndex;
         notifyDataSetChanged();
     }
 
