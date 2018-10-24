@@ -1,4 +1,4 @@
-package io.Pushjet.api;
+package io.Pushfish.api;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
@@ -15,9 +15,9 @@ import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 
-import io.Pushjet.api.Async.GCMRegistrar;
-import io.Pushjet.api.Async.RefreshServiceAsync;
-import io.Pushjet.api.PushjetApi.PushjetApi;
+import io.Pushfish.api.Async.GCMRegistrar;
+import io.Pushfish.api.Async.RefreshServiceAsync;
+import io.Pushfish.api.PushfishApi.PushfishApi;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ public class SettingsActivity extends PreferenceActivity {
      * shown on tablets.
      */
     private static final boolean ALWAYS_SIMPLE_PREFS = false;
-    private static final String DEFAULT_PUSHJET_GCM_REGISTER_URL = "https://api.pushjet.io";
+    private static final String DEFAULT_PUSHFISH_GCM_REGISTER_URL = "https://api.pushjet.io";
     private static final String DEFAULT_SENDER_ID = "509878466986";
 
     private static Preference.OnPreferenceClickListener sBindOnPreferenceClickListener = new Preference.OnPreferenceClickListener() {
@@ -78,7 +78,7 @@ public class SettingsActivity extends PreferenceActivity {
                         db.truncateServices();
                         gcm.registerInBackground(true);
 
-                        PushjetApi api = new PushjetApi(context, getRegisterUrl(context));
+                        PushfishApi api = new PushfishApi(context, getRegisterUrl(context));
                         new RefreshServiceAsync(api, db).execute();
 
                         dialog.dismiss();
@@ -167,10 +167,10 @@ public class SettingsActivity extends PreferenceActivity {
         boolean useCustom = preferences.getBoolean("server_use_custom", false);
 
         if (useCustom) {
-            String url = preferences.getString("server_custom_url", DEFAULT_PUSHJET_GCM_REGISTER_URL);
+            String url = preferences.getString("server_custom_url", DEFAULT_PUSHFISH_GCM_REGISTER_URL);
             return url.replaceAll("/+$", "");
         } else {
-            return DEFAULT_PUSHJET_GCM_REGISTER_URL;
+            return DEFAULT_PUSHFISH_GCM_REGISTER_URL;
         }
     }
 

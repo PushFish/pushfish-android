@@ -1,4 +1,4 @@
-package io.Pushjet.api;
+package io.Pushfish.api;
 
 
 import android.content.ContentValues;
@@ -8,14 +8,13 @@ import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import io.Pushjet.api.PushjetApi.PushjetException;
-import io.Pushjet.api.PushjetApi.PushjetMessage;
-import io.Pushjet.api.PushjetApi.PushjetService;
+import io.Pushfish.api.PushfishApi.PushfishService;
+import io.Pushfish.api.PushfishApi.PushfishException;
+import io.Pushfish.api.PushfishApi.PushfishMessage;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
     private String TABLE_SUBSCRIPTION = "subscription";
@@ -69,25 +68,25 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
-    public PushjetMessage[] getAllMessages() {
+    public PushfishMessage[] getAllMessages() {
         SQLiteDatabase db = this.getReadableDatabase();
 
         try {
-            List<PushjetMessage> result = new ArrayList<>();
+            List<PushfishMessage> result = new ArrayList<>();
             Cursor cMsg = db.query(TABLE_MESSAGE, TABLE_MESSAGE_KEYS, null, null, null, null, null);
             if (cMsg.getCount() > 0 && cMsg.moveToFirst()) {
                 do {
                     result.add(getMessageFromRow(cMsg));
                 } while (cMsg.moveToNext());
             }
-            PushjetMessage[] ret = new PushjetMessage[result.size()];
+            PushfishMessage[] ret = new PushfishMessage[result.size()];
             return result.toArray(ret);
         } finally {
             db.close();
         }
     }
 
-    public void addMessage(PushjetMessage msg) {
+    public void addMessage(PushfishMessage msg) {
         ContentValues vMsg = new ContentValues();
         vMsg.put(KEY_MESSAGE_SERVICE, msg.getService().getToken());
         vMsg.put(KEY_MESSAGE_TEXT, msg.getMessage());
@@ -102,7 +101,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             db.insert(TABLE_MESSAGE, null, vMsg);
 
             if (!isListening(msg.getService())) {
-                PushjetService srv = new PushjetService(msg.getService().getToken(), "UNKNOWN");
+                PushfishService srv = new PushfishService(msg.getService().getToken(), "UNKNOWN");
                 addService(srv);
             }
         } finally {
@@ -110,7 +109,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
-    public void cleanService(PushjetService service) {
+    public void cleanService(PushfishService service) {
         if (isListening(service)) {
             SQLiteDatabase db = this.getWritableDatabase();
             String fmt = "`%s` = '%s'";
@@ -123,11 +122,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
-    public void addService(PushjetService service) {
-        addServices(new PushjetService[]{service});
+    public void addService(PushfishService service) {
+        addServices(new PushfishService[]{service});
     }
 
-    public void removeService(PushjetService service) {
+    public void removeService(PushfishService service) {
         if (isListening(service)) {
             SQLiteDatabase db = this.getWritableDatabase();
 
@@ -138,7 +137,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
-    public void deleteMessage(PushjetMessage message) {
+    public void deleteMessage(PushfishMessage message) {
         SQLiteDatabase db = this.getWritableDatabase();
         String fmt = "`%s` = '%s'";
 
@@ -149,23 +148,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
-    public PushjetMessage getMessage(int id) throws PushjetException {
+    public PushfishMessage getMessage(int id) throws PushfishException {
         SQLiteDatabase db = this.getReadableDatabase();
 
         try {
             Cursor cMsg = db.query(TABLE_MESSAGE, TABLE_MESSAGE_KEYS, KEY_MESSAGE_ID + " = ?", new String[]{id + ""}, null, null, null);
             if (cMsg.getCount() > 0 && cMsg.moveToFirst())
                 return getMessageFromRow(cMsg);
-            throw new PushjetException("Message not found", 400);
+            throw new PushfishException("Message not found", 400);
         } finally {
             db.close();
         }
     }
 
-    public void addServices(PushjetService[] services) {
+    public void addServices(PushfishService[] services) {
         SQLiteDatabase db = this.getWritableDatabase();
         try {
-            for (PushjetService service : services) {
+            for (PushfishService service : services) {
                 boolean subscribed = isListening(service);
                 if (!db.isOpen()) db = this.getWritableDatabase();
 
@@ -199,13 +198,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
-    public PushjetService getService(String token) {
+    public PushfishService getService(String token) {
         SQLiteDatabase db = this.getReadableDatabase();
-        PushjetService srv;
+        PushfishService srv;
         try {
             Cursor cLsn = db.query(TABLE_SUBSCRIPTION, TABLE_SUBSCRIPTION_KEYS, KEY_SUBSCRIPTION_TOKEN + " = ?", new String[]{token}, null, null, null);
             cLsn.moveToFirst();
-            srv = new PushjetService(
+            srv = new PushfishService(
                     cLsn.getString(0),
                     cLsn.getString(2),
                     cLsn.getString(3),
@@ -213,20 +212,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     new Date((long) cLsn.getInt(4) * 1000)
             );
         } catch (CursorIndexOutOfBoundsException ignore) {
-            srv = new PushjetService(token, "UNKNOWN");
+            srv = new PushfishService(token, "UNKNOWN");
         } finally {
             db.close();
         }
         return srv;
     }
 
-    public void refreshServices(PushjetService[] services) {
+    public void refreshServices(PushfishService[] services) {
         this.addServices(services);
 
-        PushjetService[] subscribed = this.getAllServices();
-        for (PushjetService l1 : subscribed) {
+        PushfishService[] subscribed = this.getAllServices();
+        for (PushfishService l1 : subscribed) {
             boolean rm = true;
-            for (PushjetService l2 : services) {
+            for (PushfishService l2 : services) {
                 if (l1.getToken().equals(l2.getToken())) {
                     rm = false; break;
                 }
@@ -236,7 +235,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
-    public boolean isListening(PushjetService service) {
+    public boolean isListening(PushfishService service) {
         return this.isListening(service.getToken());
     }
 
@@ -251,15 +250,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
-    public PushjetService[] getAllServices() {
+    public PushfishService[] getAllServices() {
         SQLiteDatabase db = this.getReadableDatabase();
-        List<PushjetService> result = new ArrayList<PushjetService>();
+        List<PushfishService> result = new ArrayList<PushfishService>();
 
         try {
             Cursor cSrv = db.query(TABLE_SUBSCRIPTION, TABLE_SUBSCRIPTION_KEYS, null, null, null, null, null);
             if (cSrv.getCount() > 0 && cSrv.moveToFirst()) {
                 do {
-                    result.add(new PushjetService(
+                    result.add(new PushfishService(
                             cSrv.getString(0),
                             cSrv.getString(2),
                             cSrv.getString(3),
@@ -268,7 +267,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     ));
                 } while (cSrv.moveToNext());
             }
-            return result.toArray(new PushjetService[result.size()]);
+            return result.toArray(new PushfishService[result.size()]);
         } finally {
             db.close();
         }
@@ -294,8 +293,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
-    private PushjetMessage getMessageFromRow(Cursor cMsg) {
-        PushjetMessage msg = new PushjetMessage(
+    private PushfishMessage getMessageFromRow(Cursor cMsg) {
+        PushfishMessage msg = new PushfishMessage(
                 getService(cMsg.getString(1)),
                 cMsg.getString(2),
                 cMsg.getString(3),

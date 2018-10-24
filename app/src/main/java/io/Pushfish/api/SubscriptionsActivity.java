@@ -1,4 +1,4 @@
-package io.Pushjet.api;
+package io.Pushfish.api;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -30,21 +30,21 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.google.zxing.qrcode.QRCodeWriter;
 
-import io.Pushjet.api.Async.AddServiceAsync;
-import io.Pushjet.api.Async.DeleteServiceAsync;
-import io.Pushjet.api.Async.GenericAsyncCallback;
-import io.Pushjet.api.Async.RefreshServiceAsync;
-import io.Pushjet.api.Async.RefreshServiceCallback;
-import io.Pushjet.api.PushjetApi.PushjetApi;
-import io.Pushjet.api.PushjetApi.PushjetException;
-import io.Pushjet.api.PushjetApi.PushjetService;
-import io.Pushjet.api.PushjetApi.PushjetUri;
+import io.Pushfish.api.Async.AddServiceAsync;
+import io.Pushfish.api.Async.DeleteServiceAsync;
+import io.Pushfish.api.Async.GenericAsyncCallback;
+import io.Pushfish.api.Async.RefreshServiceAsync;
+import io.Pushfish.api.Async.RefreshServiceCallback;
+import io.Pushfish.api.PushfishApi.PushfishApi;
+import io.Pushfish.api.PushfishApi.PushfishService;
+import io.Pushfish.api.PushfishApi.PushfishException;
+import io.Pushfish.api.PushfishApi.PushfishUri;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class SubscriptionsActivity extends ListActivity {
-    private PushjetApi api;
+    private io.Pushfish.api.PushfishApi.PushfishApi api;
     private DatabaseHandler db;
     private SubscriptionsAdapter adapter;
     private BroadcastReceiver receiver;
@@ -64,22 +64,22 @@ public class SubscriptionsActivity extends ListActivity {
         this.refreshLayout.setEnabled(true);
         this.refreshLayout.setOnRefreshListener(refreshListener);
 
-        this.api = new PushjetApi(getApplicationContext(), SettingsActivity.getRegisterUrl(this));
+        this.api = new PushfishApi(getApplicationContext(), io.Pushfish.api.SettingsActivity.getRegisterUrl(this));
         this.db = new DatabaseHandler(getApplicationContext());
 
-        adapter = new SubscriptionsAdapter(this);
+        adapter = new io.Pushfish.api.SubscriptionsAdapter(this);
         setListAdapter(adapter);
 
-        adapter.upDateEntries(new ArrayList<PushjetService>(Arrays.asList(db.getAllServices())));
+        adapter.upDateEntries(new ArrayList<PushfishService>(Arrays.asList(db.getAllServices())));
         registerForContextMenu(findViewById(android.R.id.list));
 
-        Uri pushjetUri = getIntent().getData();
-        if (pushjetUri != null) {
+        Uri pushfishUri = getIntent().getData();
+        if (pushfishUri != null) {
             try {
-                String host = pushjetUri.getHost();
-                Log.d("PushjetService", "Host: " + host);
+                String host = pushfishUri.getHost();
+                Log.d("PushfishService", "Host: " + host);
                 parseTokenOrUri(host);
-            } catch (PushjetException e) {
+            } catch (PushfishException e) {
                 Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
             } catch (NullPointerException ignore) {
             }
@@ -92,7 +92,7 @@ public class SubscriptionsActivity extends ListActivity {
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                adapter.upDateEntries(new ArrayList<PushjetService>(Arrays.asList(db.getAllServices())));
+                adapter.upDateEntries(new ArrayList<PushfishService>(Arrays.asList(db.getAllServices())));
             }
         };
     }
@@ -100,7 +100,7 @@ public class SubscriptionsActivity extends ListActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        registerReceiver(receiver, new IntentFilter("PushjetIconDownloaded"));
+        registerReceiver(receiver, new IntentFilter("PushfishIconDownloaded"));
     }
 
     @Override
@@ -124,10 +124,10 @@ public class SubscriptionsActivity extends ListActivity {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        PushjetService service = (PushjetService) adapter.getItem(Math.round(info.id));
+        PushfishService service = (PushfishService) adapter.getItem(Math.round(info.id));
         switch (item.getItemId()) {
             case R.id.action_copy_token:
-                MiscUtil.WriteToClipboard(service.getToken(), "Pushjet Token", this);
+                MiscUtil.WriteToClipboard(service.getToken(), "Pushfish Token", this);
                 Toast.makeText(this, "Copied token to clipboard", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.action_delete:
@@ -135,14 +135,14 @@ public class SubscriptionsActivity extends ListActivity {
                 deleteServiceAsync.setCallback(new GenericAsyncCallback() {
                     @Override
                     public void onComplete(Object... objects) {
-                        adapter.upDateEntries(new ArrayList<PushjetService>(Arrays.asList(db.getAllServices())));
+                        adapter.upDateEntries(new ArrayList<PushfishService>(Arrays.asList(db.getAllServices())));
                     }
                 });
                 deleteServiceAsync.execute(service);
                 return true;
             case R.id.action_clear_notifications:
                 db.cleanService(service);
-                sendBroadcast(new Intent("PushjetMessageRefresh"));
+                sendBroadcast(new Intent("PushfishMessageRefresh"));
                 return true;
             case R.id.action_share:
                 Intent share = new Intent(Intent.ACTION_SEND);
@@ -205,7 +205,7 @@ public class SubscriptionsActivity extends ListActivity {
                                         public void onClick(DialogInterface dialog, int which) {
                                             try {
                                                 parseTokenOrUri(input.getText().toString());
-                                            } catch (PushjetException e) {
+                                            } catch (PushfishException e) {
                                                 Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                                             } catch (NullPointerException ignore) {
                                             }
@@ -230,16 +230,16 @@ public class SubscriptionsActivity extends ListActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void parseTokenOrUri(String token) throws PushjetException {
+    private void parseTokenOrUri(String token) throws PushfishException {
         token = token.trim();
-        if (PushjetUri.isValidUri(token)) {
+        if (PushfishUri.isValidUri(token)) {
             try {
-                token = PushjetUri.tokenFromUri(token);
-            } catch (PushjetException ignore) {
+                token = PushfishUri.tokenFromUri(token);
+            } catch (PushfishException ignore) {
             }
         }
-        if (!PushjetUri.isValidToken(token))
-            throw new PushjetException("Invalid service id", 2);
+        if (!PushfishUri.isValidToken(token))
+            throw new PushfishException("Invalid service id", 2);
 
         AddServiceAsync addServiceAsync = new AddServiceAsync(api, db, adapter);
         addServiceAsync.execute(token);
@@ -252,7 +252,7 @@ public class SubscriptionsActivity extends ListActivity {
             if (scanResult == null)
                 return;
             parseTokenOrUri(scanResult.getContents().trim());
-        } catch (PushjetException e) {
+        } catch (PushfishException e) {
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         } catch (NullPointerException ignore) {
         }
@@ -261,8 +261,8 @@ public class SubscriptionsActivity extends ListActivity {
     private void refreshServices() {
         RefreshServiceCallback callback = new RefreshServiceCallback() {
             @Override
-            public void onComplete(PushjetService[] services) {
-                adapter.upDateEntries(new ArrayList<PushjetService>(Arrays.asList(services)));
+            public void onComplete(PushfishService[] services) {
+                adapter.upDateEntries(new ArrayList<PushfishService>(Arrays.asList(services)));
                 refreshLayout.setRefreshing(false);
             }
         };

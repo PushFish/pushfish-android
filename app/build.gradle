@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        applicationId "io.Pushjet.api"
+        applicationId "io.Pushfish.api"
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 6

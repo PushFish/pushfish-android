@@ -1,4 +1,4 @@
-package io.Pushjet.api.Async;
+package io.Pushfish.api.Async;
 
 
 import android.content.Context;
@@ -26,9 +26,9 @@ import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.Pushjet.api.HttpUtil;
-import io.Pushjet.api.PushjetApi.DeviceUuidFactory;
-import io.Pushjet.api.SettingsActivity;
+import io.Pushfish.api.HttpUtil;
+import io.Pushfish.api.PushfishApi.DeviceUuidFactory;
+import io.Pushfish.api.SettingsActivity;
 
 // TODO: Cleanup
 public class GCMRegistrar {

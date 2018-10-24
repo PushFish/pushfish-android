@@ -1,36 +1,36 @@
-package io.Pushjet.api.PushjetApi;
+package io.Pushfish.api.PushfishApi;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import io.Pushjet.api.MiscUtil;
-import io.Pushjet.api.R;
+import io.Pushfish.api.MiscUtil;
+import io.Pushfish.api.R;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Date;
 
-public class PushjetService {
+public class PushfishService {
     private String name;
     private String token;
     private Date created;
     private String icon;
     private String secret;
 
-    public PushjetService(String token, String name) {
+    public PushfishService(String token, String name) {
         this(token, name, new Date());
     }
 
-    public PushjetService(String token, String name, Date created) {
+    public PushfishService(String token, String name, Date created) {
         this(token, name, "", created);
     }
 
-    public PushjetService(String token, String name, String icon, Date created) {
+    public PushfishService(String token, String name, String icon, Date created) {
         this(token, name, icon, "", created);
     }
 
-    public PushjetService(String token, String name, String icon, String secret, Date created) {
+    public PushfishService(String token, String name, String icon, String secret, Date created) {
         this.token = token;
         this.name = name;
         this.created = created;

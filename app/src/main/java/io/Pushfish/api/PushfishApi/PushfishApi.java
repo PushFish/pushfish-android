@@ -1,8 +1,8 @@
-package io.Pushjet.api.PushjetApi;
+package io.Pushfish.api.PushfishApi;
 
 import android.content.Context;
 
-import io.Pushjet.api.HttpUtil;
+import io.Pushfish.api.HttpUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,17 +13,17 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PushjetApi {
+public class PushfishApi {
     private String baseurl;
     private int lastCheck = 0;
     private String uuid;
     private Context context;
 
-    public PushjetApi(Context context) {
-        this(context, "http://api.pushjet.io");
+    public PushfishApi(Context context) {
+        this(context, "http://io.Pushfish.api.pushjet.io");
     }
 
-    public PushjetApi(Context context, String url) {
+    public PushfishApi(Context context, String url) {
         this.baseurl = url;
         this.context = context;
         this.uuid = (new DeviceUuidFactory(context)).getDeviceUuid().toString();
@@ -41,44 +41,44 @@ public class PushjetApi {
         return new Date((long) this.lastCheck * 1000);
     }
 
-    public PushjetService addSubscription(String service) throws PushjetException {
+    public PushfishService addSubscription(String service) throws PushfishException {
         Map<String, String> data = this.getBaseMap();
         data.put("service", service);
 
         try {
             JSONObject obj = this.apiHttpPost("/subscription", data).getJSONObject("service");
-            PushjetService srv = new PushjetService(obj.getString("public"), obj.getString("name"), new Date((long) obj.getInt("created") * 1000));
+            PushfishService srv = new PushfishService(obj.getString("public"), obj.getString("name"), new Date((long) obj.getInt("created") * 1000));
             srv.setIcon(obj.getString("icon"));
             return srv;
         } catch (JSONException ignore) {
-            throw new PushjetException("Unknown error", -1);
+            throw new PushfishException("Unknown error", -1);
         }
     }
 
-    public void deleteSubscription(String service) throws PushjetException {
+    public void deleteSubscription(String service) throws PushfishException {
         Map<String, String> data = this.getBaseMap();
         data.put("service", service);
         this.apiHttpDelete("/subscription", data);
     }
 
-    public PushjetService[] listSubscriptions() throws PushjetException {
+    public PushfishService[] listSubscriptions() throws PushfishException {
         Map<String, String> data = this.getBaseMap();
         JSONObject obj = this.apiHttpGet("/subscription", data);
         try {
             JSONArray lstn = obj.getJSONArray("subscriptions");
-            PushjetService[] srv = new PushjetService[lstn.length()];
+            PushfishService[] srv = new PushfishService[lstn.length()];
             for (int i = 0; i < srv.length; i++) {
                 JSONObject o = lstn.getJSONObject(i).getJSONObject("service");
-                srv[i] = new PushjetService(o.getString("public"), o.getString("name"), new Date((long) o.getInt("created") * 1000));
+                srv[i] = new PushfishService(o.getString("public"), o.getString("name"), new Date((long) o.getInt("created") * 1000));
                 srv[i].setIcon(o.getString("icon"));
             }
             return srv;
         } catch (JSONException ignore) {
-            throw new PushjetException("Unknown error", -1);
+            throw new PushfishException("Unknown error", -1);
         }
     }
 
-    public void sendMessage(PushjetMessage msg) throws PushjetException {
+    public void sendMessage(PushfishMessage msg) throws PushfishException {
         Map<String, String> data = new HashMap<String, String>();
         data.put("service", msg.getService().getToken());
         data.put("message", msg.getMessage());
@@ -87,20 +87,20 @@ public class PushjetApi {
         this.apiHttpPost("/message", data);
     }
 
-    public PushjetMessage[] getNewMessage() throws PushjetException {
+    public PushfishMessage[] getNewMessage() throws PushfishException {
         this.lastCheck = Math.round(System.currentTimeMillis() / 1000);
         try {
             JSONArray json = this.apiHttpGet("/message", this.getBaseMap()).getJSONArray("messages");
-            PushjetMessage[] msg = new PushjetMessage[json.length()];
+            PushfishMessage[] msg = new PushfishMessage[json.length()];
             for (int i = 0; i < json.length(); i++) {
                 JSONObject AzMsg = json.getJSONObject(i);
                 JSONObject AzServ = AzMsg.getJSONObject("service");
-                PushjetService srv = new PushjetService(
+                PushfishService srv = new PushfishService(
                         AzServ.getString("public"),
                         AzServ.getString("name"),
                         new Date((long) AzServ.getInt("created") * 1000)
                 );
-                msg[i] = new PushjetMessage(
+                msg[i] = new PushfishMessage(
                         srv,
                         AzMsg.getString("message"),
                         AzMsg.getString("title"),
@@ -111,7 +111,7 @@ public class PushjetApi {
             }
             return msg;
         } catch (JSONException ignore) {
-            throw new PushjetException("Unable to parse data", 101);
+            throw new PushfishException("Unable to parse data", 101);
         }
     }
 
@@ -121,7 +121,7 @@ public class PushjetApi {
         return data;
     }
 
-    private JSONObject apiHttpPost(String route, Map<String, String> data) throws PushjetException {
+    private JSONObject apiHttpPost(String route, Map<String, String> data) throws PushfishException {
         String url = this.baseurl + route;
         String resp = "";
         try {
@@ -129,17 +129,17 @@ public class PushjetApi {
             JSONObject json = new JSONObject(resp);
             if (json.has("error")) {
                 JSONObject err = json.getJSONObject("error");
-                throw new PushjetException(err.getString("message"), err.getInt("id"));
+                throw new PushfishException(err.getString("message"), err.getInt("id"));
             }
             return json;
         } catch (IOException ignore) {
-            throw new PushjetException("There was a network issue", 100);
+            throw new PushfishException("There was a network issue", 100);
         } catch (JSONException ignore) {
-            throw new PushjetException("Unable to parse data: " + resp, 101);
+            throw new PushfishException("Unable to parse data: " + resp, 101);
         }
     }
 
-    private JSONObject apiHttpGet(String route, Map<String, String> data) throws PushjetException {
+    private JSONObject apiHttpGet(String route, Map<String, String> data) throws PushfishException {
         String url = this.baseurl + route;
         String resp = "";
         try {
@@ -147,17 +147,17 @@ public class PushjetApi {
             JSONObject json = new JSONObject(resp);
             if (json.has("error")) {
                 JSONObject err = json.getJSONObject("error");
-                throw new PushjetException(err.getString("message"), err.getInt("id"));
+                throw new PushfishException(err.getString("message"), err.getInt("id"));
             }
             return json;
         } catch (IOException ignore) {
-            throw new PushjetException("There was a network issue", 100);
+            throw new PushfishException("There was a network issue", 100);
         } catch (JSONException ignore) {
-            throw new PushjetException("Unable to parse data: " + resp, 101);
+            throw new PushfishException("Unable to parse data: " + resp, 101);
         }
     }
 
-    private JSONObject apiHttpDelete(String route, Map<String, String> data) throws PushjetException {
+    private JSONObject apiHttpDelete(String route, Map<String, String> data) throws PushfishException {
         String url = this.baseurl + route;
         String resp = "";
         try {
@@ -165,13 +165,13 @@ public class PushjetApi {
             JSONObject json = new JSONObject(resp);
             if (json.has("error")) {
                 JSONObject err = json.getJSONObject("error");
-                throw new PushjetException(err.getString("message"), err.getInt("id"));
+                throw new PushfishException(err.getString("message"), err.getInt("id"));
             }
             return json;
         } catch (IOException ignore) {
-            throw new PushjetException("There was a network issue", 100);
+            throw new PushfishException("There was a network issue", 100);
         } catch (JSONException ignore) {
-            throw new PushjetException("Unable to parse data: " + resp, 101);
+            throw new PushfishException("Unable to parse data: " + resp, 101);
         }
     }
 }

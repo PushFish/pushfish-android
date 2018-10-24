@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.Pushjet.api" >
+    package="io.Pushfish.api" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -9,8 +9,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.sonymobile.permission.SYSTEM_UI_VISIBILITY_EXTENSIONS" />
 
-    <permission android:name="io.Pushjet.api.permission.C2D_MESSAGE" android:protectionLevel="signature" />
-    <uses-permission android:name="io.Pushjet.api.permission.C2D_MESSAGE" />
+    <permission android:name="io.Pushfish.api.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+    <uses-permission android:name="io.Pushfish.api.permission.C2D_MESSAGE" />
 
     <application
         android:allowBackup="true"
@@ -18,7 +18,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="io.Pushjet.api.PushListActivity"
+            android:name="io.Pushfish.api.PushListActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,43 +27,43 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="io.Pushjet.api.SubscriptionsActivity"
+            android:name="io.Pushfish.api.SubscriptionsActivity"
             android:label="@string/title_activity_subscriptions"
-            android:parentActivityName="io.Pushjet.api.PushListActivity" >
+            android:parentActivityName="io.Pushfish.api.PushListActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="pjet" />
+                <data android:scheme="pfish" />
             </intent-filter>
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="io.Pushjet.api.PushListActivity" />
+                android:value="io.Pushfish.api.PushListActivity" />
         </activity>
 
         <receiver
-            android:name="io.Pushjet.api.GcmBroadcastReceiver"
+            android:name="io.Pushfish.api.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
 
-                <category android:name="io.Pushjet.api" />
+                <category android:name="io.Pushfish.api" />
             </intent-filter>
         </receiver>
 
-        <service android:name="io.Pushjet.api.GcmIntentService" />
+        <service android:name="io.Pushfish.api.GcmIntentService" />
 
         <activity
-            android:name="io.Pushjet.api.SettingsActivity"
+            android:name="io.Pushfish.api.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:theme="@style/SettingsTheme"
-            android:parentActivityName="io.Pushjet.api.PushListActivity" >
+            android:parentActivityName="io.Pushfish.api.PushListActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="io.Pushjet.api.PushListActivity" />
+                android:value="io.Pushfish.api.PushListActivity" />
         </activity>
     </application>
 
