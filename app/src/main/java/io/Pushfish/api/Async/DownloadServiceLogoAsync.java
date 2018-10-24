@@ -1,12 +1,12 @@
-package io.Pushjet.api.Async;
+package io.Pushfish.api.Async;
 
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 
-import io.Pushjet.api.MiscUtil;
-import io.Pushjet.api.PushjetApi.PushjetService;
+import io.Pushfish.api.MiscUtil;
+import io.Pushfish.api.PushfishApi.PushfishService;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DownloadServiceLogoAsync extends AsyncTask<PushjetService, Void, Map<String, byte[]>> {
+public class DownloadServiceLogoAsync extends AsyncTask<PushfishService, Void, Map<String, byte[]>> {
     private Context context;
 
     public DownloadServiceLogoAsync(Context context) {
@@ -29,9 +29,9 @@ public class DownloadServiceLogoAsync extends AsyncTask<PushjetService, Void, Ma
     }
 
     @Override
-    protected Map<String, byte[]> doInBackground(PushjetService... services) {
+    protected Map<String, byte[]> doInBackground(PushfishService... services) {
         Map<String, byte[]> bitmaps = new HashMap<String, byte[]>();
-        for (PushjetService service : services) {
+        for (PushfishService service : services) {
             if (!service.hasIcon() || service.iconCached(this.context))
                 continue;
             ByteArrayOutputStream out = new ByteArrayOutputStream();

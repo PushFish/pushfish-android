@@ -1,4 +1,4 @@
-package io.Pushjet.api;
+package io.Pushfish.api;
 
 import android.app.Activity;
 import android.content.ComponentName;

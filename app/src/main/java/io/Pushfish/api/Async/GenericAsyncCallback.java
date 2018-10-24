@@ -1,4 +1,4 @@
-package io.Pushjet.api.Async;
+package io.Pushfish.api.Async;
 
 
 public interface GenericAsyncCallback {

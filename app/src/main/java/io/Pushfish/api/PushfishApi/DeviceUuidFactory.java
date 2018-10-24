@@ -1,4 +1,4 @@
-package io.Pushjet.api.PushjetApi;
+package io.Pushfish.api.PushfishApi;
 
 import android.content.Context;
 import android.content.SharedPreferences;

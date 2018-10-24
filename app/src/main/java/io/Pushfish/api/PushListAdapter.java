@@ -1,4 +1,4 @@
-package io.Pushjet.api;
+package io.Pushfish.api;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import io.Pushjet.api.PushjetApi.PushjetMessage;
+import io.Pushfish.api.PushfishApi.PushfishMessage;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -25,7 +25,7 @@ public class PushListAdapter extends BaseAdapter {
 
     private Context context;
     private LayoutInflater layoutInflater;
-    private ArrayList<PushjetMessage> entries = new ArrayList<>();
+    private ArrayList<PushfishMessage> entries = new ArrayList<>();
     private DateFormat dateFormat;
     private int selectedIndex = -1;
 
@@ -107,19 +107,19 @@ public class PushListAdapter extends BaseAdapter {
         setSelected(-1);
     }
 
-    public void addEntries(ArrayList<PushjetMessage> entries) {
+    public void addEntries(ArrayList<PushfishMessage> entries) {
         Collections.reverse(entries);
-        for (PushjetMessage entry : entries)
+        for (PushfishMessage entry : entries)
             this.entries.add(0, entry);
         notifyDataSetChanged();
     }
 
-    public void addEntry(PushjetMessage entry) {
+    public void addEntry(PushfishMessage entry) {
         this.entries.add(0, entry);
         notifyDataSetChanged();
     }
 
-    public void upDateEntries(ArrayList<PushjetMessage> entries) {
+    public void upDateEntries(ArrayList<PushfishMessage> entries) {
         Collections.reverse(entries);
         this.entries = entries;
         notifyDataSetChanged();

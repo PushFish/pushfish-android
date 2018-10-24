@@ -1,4 +1,4 @@
-package io.Pushjet.api;
+package io.Pushfish.api;
 
 import android.app.ListActivity;
 import android.content.BroadcastReceiver;
@@ -29,14 +29,14 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import io.Pushjet.api.Async.FirstLaunchAsync;
-import io.Pushjet.api.Async.ReceivePushAsync;
-import io.Pushjet.api.Async.ReceivePushCallback;
-import io.Pushjet.api.PushjetApi.PushjetApi;
-import io.Pushjet.api.PushjetApi.PushjetMessage;
+import io.Pushfish.api.Async.FirstLaunchAsync;
+import io.Pushfish.api.Async.ReceivePushAsync;
+import io.Pushfish.api.Async.ReceivePushCallback;
+import io.Pushfish.api.PushfishApi.PushfishApi;
+import io.Pushfish.api.PushfishApi.PushfishMessage;
 
 public class PushListActivity extends ListActivity {
-    private PushjetApi api;
+    private PushfishApi api;
     private DatabaseHandler db;
     private PushListAdapter adapter;
     private BroadcastReceiver receiver;
@@ -47,7 +47,7 @@ public class PushListActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_push_list);
-        this.api = new PushjetApi(getApplicationContext(), SettingsActivity.getRegisterUrl(this));
+        this.api = new PushfishApi(getApplicationContext(), SettingsActivity.getRegisterUrl(this));
         this.db = new DatabaseHandler(getApplicationContext());
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         boolean isFirstLaunch = preferences.getBoolean("first_launch", true);
@@ -134,7 +134,7 @@ public class PushListActivity extends ListActivity {
                         ReceivePushAsync receivePushAsync = new ReceivePushAsync(api, adapter);
                         receivePushAsync.setCallBack(new ReceivePushCallback() {
                             @Override
-                            public void receivePush(ArrayList<PushjetMessage> messages) {
+                            public void receivePush(ArrayList<PushfishMessage> messages) {
                                 refreshLayout.setRefreshing(false);
                             }
                         });
@@ -150,7 +150,7 @@ public class PushListActivity extends ListActivity {
         this.getListView().setLongClickable(true);
         this.getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
-                PushjetMessage message = (PushjetMessage) adapter.getItem(position);
+                PushfishMessage message = (PushfishMessage) adapter.getItem(position);
 
                 MiscUtil.WriteToClipboard(message.getMessage(), "Pushjet message", getApplicationContext());
                 Toast.makeText(getApplicationContext(), "Copied message to clipboard", Toast.LENGTH_SHORT).show();
@@ -171,7 +171,7 @@ public class PushListActivity extends ListActivity {
 
     private void configureMqttClient() {
         try {
-            mqttClient = new MqttAsyncClient("tcp://test-api.push.fish:1883", "android", new MemoryPersistence());
+            mqttClient = new MqttAsyncClient("tcp://test-io.Pushfish.api.push.fish:1883", "android", new MemoryPersistence());
             mqttClient.setCallback(new MqttCallbackExtended() {
                 @Override
                 public void connectComplete(boolean reconnect, String serverURI) {

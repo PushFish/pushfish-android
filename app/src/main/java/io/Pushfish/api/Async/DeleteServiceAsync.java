@@ -1,19 +1,19 @@
-package io.Pushjet.api.Async;
+package io.Pushfish.api.Async;
 
 
 import android.os.AsyncTask;
 
-import io.Pushjet.api.DatabaseHandler;
-import io.Pushjet.api.PushjetApi.PushjetApi;
-import io.Pushjet.api.PushjetApi.PushjetException;
-import io.Pushjet.api.PushjetApi.PushjetService;
+import io.Pushfish.api.DatabaseHandler;
+import io.Pushfish.api.PushfishApi.PushfishApi;
+import io.Pushfish.api.PushfishApi.PushfishException;
+import io.Pushfish.api.PushfishApi.PushfishService;
 
-public class DeleteServiceAsync extends AsyncTask<PushjetService, Void, Void> {
+public class DeleteServiceAsync extends AsyncTask<PushfishService, Void, Void> {
     private DatabaseHandler db;
-    private PushjetApi api;
-    private GenericAsyncCallback callback;
+    private PushfishApi api;
+    private io.Pushfish.api.Async.GenericAsyncCallback callback;
 
-    public DeleteServiceAsync(PushjetApi api, DatabaseHandler db) {
+    public DeleteServiceAsync(PushfishApi api, DatabaseHandler db) {
         this.api = api;
         this.db = db;
         this.callback = null;
@@ -24,12 +24,12 @@ public class DeleteServiceAsync extends AsyncTask<PushjetService, Void, Void> {
     }
 
     @Override
-    protected Void doInBackground(PushjetService... services) {
-        for (PushjetService service : services) {
+    protected Void doInBackground(PushfishService... services) {
+        for (PushfishService service : services) {
             try {
                 api.deleteSubscription(service.getToken());
                 db.removeService(service);
-            } catch (PushjetException e) {
+            } catch (PushfishException e) {
                 e.printStackTrace();
             }
         }

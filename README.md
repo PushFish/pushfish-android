@@ -1,11 +1,11 @@
-The Pushjet Android Client [![Circle CI](https://circleci.com/gh/Pushjet/Pushjet-Android.svg?style=svg)](https://circleci.com/gh/Pushjet/Pushjet-Android) [![License](http://img.shields.io/badge/license-BSD-blue.svg?style=flat)](/LICENSE)
+The Pushfish Android Client [![Circle CI](https://circleci.com/gh/Pushjet/Pushjet-Android.svg?style=svg)](https://circleci.com/gh/Pushjet/Pushjet-Android) [![License](http://img.shields.io/badge/license-BSD-blue.svg?style=flat)](/LICENSE)
 ==========================
-This is the pushjet android client. It currently uses google GCM to send and receive messages. This means 
+This is the pushfish android client. It currently uses google GCM to send and receive messages. This means 
 that any message that is directed at the android client *will* go through google. The client is licensed 
 under [BSD 2 clause][1] just like the rest of the project.
 
 ## Permissions explained
-The [permissions][4] used by Pushjet might seem a bit broad but they all have a reason:
+The [permissions][4] used by Pushfish might seem a bit broad but they all have a reason:
 
  - Read phone status and identity:
   - This is needed [to generate the device uuid ][5] that authenticates the device with the server.
@@ -15,7 +15,7 @@ The [permissions][4] used by Pushjet might seem a bit broad but they all have a 
   - This makes sure we can receive notifications.
 
 ## Screenshots
-![Pushjet push listing material][6] ![Pushjet push listing][2] ![Subscriptions][3]
+![Pushfish push listing material][6] ![Pushfish push listing][2] ![Subscriptions][3]
 
 
 [1]: https://tldrlegal.com/license/bsd-2-clause-license-%28freebsd%29

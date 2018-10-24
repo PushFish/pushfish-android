@@ -1,4 +1,4 @@
-package io.Pushjet.api;
+package io.Pushfish.api;
 
 import android.annotation.TargetApi;
 import android.app.IntentService;
@@ -17,8 +17,8 @@ import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
-import io.Pushjet.api.PushjetApi.PushjetMessage;
-import io.Pushjet.api.PushjetApi.PushjetService;
+import io.Pushfish.api.PushfishApi.PushfishService;
+import io.Pushfish.api.PushfishApi.PushfishMessage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,14 +45,14 @@ public class GcmIntentService extends IntentService {
             try {
                 JSONObject Msg = new JSONObject(rawJson);
                 JSONObject Srv = Msg.getJSONObject("service");
-                PushjetService srv = new PushjetService(
+                PushfishService srv = new PushfishService(
                         Srv.getString("public"),
                         Srv.getString("name"),
                         new Date((long) Srv.getInt("created") * 1000)
                 );
                 srv.setIcon(Srv.getString("icon"));
 
-                PushjetMessage msg = new PushjetMessage(
+                PushfishMessage msg = new PushfishMessage(
                         srv,
                         Msg.getString("message"),
                         Msg.getString("title"),
@@ -71,7 +71,7 @@ public class GcmIntentService extends IntentService {
         sendBroadcast(new Intent("PushjetMessageRefresh"));
     }
 
-    private void sendNotification(PushjetMessage msg) {
+    private void sendNotification(PushfishMessage msg) {
         NOTIFICATION_ID++;
         NotificationManager mNotificationManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -116,7 +116,7 @@ public class GcmIntentService extends IntentService {
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    private void setPriority(NotificationCompat.Builder mBuilder, PushjetMessage msg) {
+    private void setPriority(NotificationCompat.Builder mBuilder, PushfishMessage msg) {
         int priority = msg.getLevel() - 3;
         if(Math.abs(priority) > 2) {
             priority = 0;

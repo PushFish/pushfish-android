@@ -1,26 +1,26 @@
-package io.Pushjet.api.PushjetApi;
+package io.Pushfish.api.PushfishApi;
 
 import java.util.Date;
 import java.util.TimeZone;
 
-public class PushjetMessage {
+public class PushfishMessage {
     private String title;
     private String message;
-    private PushjetService service;
+    private PushfishService service;
     private int level;
     private Date timestamp;
     private String link;
     private int id = -1;
 
-    public PushjetMessage(PushjetService service, String message, String title) {
+    public PushfishMessage(PushfishService service, String message, String title) {
         this(service, message, title, 0);
     }
 
-    public PushjetMessage(PushjetService service, String message, String title, int timestamp) {
+    public PushfishMessage(PushfishService service, String message, String title, int timestamp) {
         this(service, message, title, new Date((long) timestamp * 1000));
     }
 
-    public PushjetMessage(PushjetService service, String message, String title, Date timestamp) {
+    public PushfishMessage(PushfishService service, String message, String title, Date timestamp) {
         this.service = service;
         this.message = message;
         this.title = title;
@@ -45,11 +45,11 @@ public class PushjetMessage {
         this.level = level;
     }
 
-    public PushjetService getService() {
+    public PushfishService getService() {
         return service;
     }
 
-    public void setService(PushjetService service) {
+    public void setService(PushfishService service) {
         this.service = service;
     }
 

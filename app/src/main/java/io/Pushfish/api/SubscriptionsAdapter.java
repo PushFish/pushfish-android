@@ -1,4 +1,4 @@
-package io.Pushjet.api;
+package io.Pushfish.api;
 
 
 import android.content.Context;
@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import io.Pushjet.api.PushjetApi.PushjetService;
+import io.Pushfish.api.PushfishApi.PushfishService;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,7 +19,7 @@ import java.util.Collections;
 public class SubscriptionsAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater layoutInflater;
-    private ArrayList<PushjetService> entries = new ArrayList<PushjetService>();
+    private ArrayList<PushfishService> entries = new ArrayList<PushfishService>();
 
     public SubscriptionsAdapter(Context context) {
         this.context = context;
@@ -67,19 +67,19 @@ public class SubscriptionsAdapter extends BaseAdapter {
         return itemView;
     }
 
-    public void addEntries(ArrayList<PushjetService> entries) {
+    public void addEntries(ArrayList<PushfishService> entries) {
         Collections.reverse(entries);
-        for (PushjetService entry : entries)
+        for (PushfishService entry : entries)
             this.entries.add(0, entry);
         notifyDataSetChanged();
     }
 
-    public void addEntry(PushjetService entry) {
+    public void addEntry(PushfishService entry) {
         this.entries.add(0, entry);
         notifyDataSetChanged();
     }
 
-    public void upDateEntries(ArrayList<PushjetService> entries) {
+    public void upDateEntries(ArrayList<PushfishService> entries) {
         Collections.reverse(entries);
         this.entries = entries;
         notifyDataSetChanged();
