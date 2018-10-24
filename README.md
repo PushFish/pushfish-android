@@ -4,6 +4,7 @@ This is the pushjet android client. It currently uses google GCM to send and rec
 that any message that is directed at the android client *will* go through google. The client is licensed 
 under [BSD 2 clause][1] just like the rest of the project.
 
+![Download latest apk](https://gitlab.com/PushFish/PushFish-Android/-/jobs/artifacts/master/raw/app/build/outputs/apk/app-debug.apk?job=build)
 ## Permissions explained
 The [permissions][4] used by Pushjet might seem a bit broad but they all have a reason:
 
