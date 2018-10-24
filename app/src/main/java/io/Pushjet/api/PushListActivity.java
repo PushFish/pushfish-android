@@ -9,21 +9,31 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
+import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
+import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import io.Pushjet.api.Async.FirstLaunchAsync;
-import io.Pushjet.api.Async.GCMRegistrar;
 import io.Pushjet.api.Async.ReceivePushAsync;
 import io.Pushjet.api.Async.ReceivePushCallback;
 import io.Pushjet.api.PushjetApi.PushjetApi;
 import io.Pushjet.api.PushjetApi.PushjetMessage;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class PushListActivity extends ListActivity {
     private PushjetApi api;
@@ -31,6 +41,7 @@ public class PushListActivity extends ListActivity {
     private PushListAdapter adapter;
     private BroadcastReceiver receiver;
     private SwipeRefreshLayout refreshLayout;
+    private MqttAsyncClient mqttClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +59,7 @@ public class PushListActivity extends ListActivity {
         }
         configureRefreshListener();
         loadListView();
-        configureMessaging(isFirstLaunch);
+        configureMessaging();
         configureBroadcastReceiver();
     }
 
@@ -148,15 +159,70 @@ public class PushListActivity extends ListActivity {
         });
     }
 
-    private void configureMessaging(Boolean isFirstLaunch) {
-        GCMRegistrar registrar = new GCMRegistrar(getApplicationContext());
-        if (isFirstLaunch || registrar.shouldRegister()) {
-            if (registrar.checkPlayServices(this)) {
-                registrar.registerInBackground(isFirstLaunch);
-            } else {
-                finish();
-            }
+    private void configureMessaging() {
+        try {
+            configureMqttClient();
+            subscribeToMqttTopic();
+            mqttClient.connect(constructConnectionOtions());
+        } catch (MqttException e) {
+            e.printStackTrace();
         }
+    }
+
+    private void configureMqttClient() {
+        try {
+            mqttClient = new MqttAsyncClient("tcp://test-api.push.fish:1883", "android", new MemoryPersistence());
+            mqttClient.setCallback(new MqttCallbackExtended() {
+                @Override
+                public void connectComplete(boolean reconnect, String serverURI) {
+                    Log.i(PushListActivity.class.getName(), "MQTT Connection successful!");
+                }
+
+                @Override
+                public void connectionLost(Throwable cause) {
+                    Log.w(PushListActivity.class.getName(), "MQTT Connection was lost!");
+                }
+
+                @Override
+                public void messageArrived(String topic, MqttMessage message) {
+                    handleMessage(topic, message);
+                }
+
+                @Override
+                public void deliveryComplete(IMqttDeliveryToken token) {
+
+                }
+            });
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void subscribeToMqttTopic() {
+        try {
+            mqttClient.subscribe("myTopic", 2, new IMqttMessageListener() { // TODO: @paynemiller once API team defines topic, subscribe to it.
+                @Override
+                public void messageArrived(String topic, MqttMessage message) {
+                    handleMessage(topic, message);
+                }
+            });
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void handleMessage(String topic, MqttMessage message) {
+        Log.i(PushListActivity.class.getName(), "Message Arrived!" +
+                "\n Topic: ".concat(topic)
+                        .concat("\n Message: ".concat(message.toString())));
+    }
+
+    private MqttConnectOptions constructConnectionOtions() {
+        MqttConnectOptions options = new MqttConnectOptions();
+        options.setMqttVersion(3);
+        options.setCleanSession(true);
+        options.setKeepAliveInterval(60);
+        return options;
     }
 
     private void configureBroadcastReceiver() {
