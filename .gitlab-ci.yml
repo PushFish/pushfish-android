@@ -1,0 +1,12 @@
+image: openjdk:8-jdk
+
+stages:
+  - build
+
+build:
+  stage: build
+  script:
+    - ./gradlew clean assembleDebug --recompile-scripts --refresh-dependencies --parallel --stacktrace
+  artifacts:
+    paths:
+    - "app/build/outputs/apk/app-debug.apk"
