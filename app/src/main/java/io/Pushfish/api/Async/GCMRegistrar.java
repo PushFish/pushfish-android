@@ -56,7 +56,7 @@ public class GCMRegistrar {
             }
             return false;
         } else {
-            Log.i(TAG, "Pushjet is ready for Take-Off!");
+            Log.i(TAG, "Pushfish is ready for Take-Off!");
         }
         return true;
     }

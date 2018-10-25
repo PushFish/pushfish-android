@@ -38,7 +38,7 @@ public class FirstLaunchAsync extends AsyncTask<Context, Void, Void> {
                 if (e.code != 4) {
                     throw e;
                 } else {
-                    service = new PushfishService(serviceToken, "Pushjet Announcements", new Date());
+                    service = new PushfishService(serviceToken, "Pushfish Announcements", new Date());
                 }
             }
 
@@ -50,7 +50,7 @@ public class FirstLaunchAsync extends AsyncTask<Context, Void, Void> {
             db.addService(service);
             db.addMessage(message);
 
-            context.sendBroadcast(new Intent("PushjetMessageRefresh"));
+            context.sendBroadcast(new Intent("PushfishMessageRefresh"));
             new RefreshServiceAsync(api, db).execute();
         } catch (PushfishException e) {
             Toast.makeText(context, "Could not register to welcome service: " + e.getMessage(), Toast.LENGTH_SHORT).show();

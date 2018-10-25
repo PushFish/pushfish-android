@@ -53,7 +53,7 @@ public class DownloadServiceLogoAsync extends AsyncTask<PushfishService, Void, M
                 }
             }
         }
-        context.sendBroadcast(new Intent("PushjetIconDownloaded"));
+        context.sendBroadcast(new Intent("PushfishIconDownloaded"));
         return bitmaps;
     }
 
