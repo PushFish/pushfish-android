@@ -36,7 +36,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private String[] TABLE_MESSAGE_KEYS = new String[]{KEY_MESSAGE_ID, KEY_MESSAGE_SERVICE, KEY_MESSAGE_TEXT, KEY_MESSAGE_TITLE, KEY_MESSAGE_LEVEL, KEY_MESSAGE_TIMESTAMP, KEY_MESSAGE_LINK};
 
     public DatabaseHandler(Context context) {
-        super(context, "Pushjet", null, 3);
+        super(context, "Pushfish", null, 3);
     }
 
     @Override

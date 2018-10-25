@@ -52,7 +52,7 @@ public class HttpUtil {
             conn.setUseCaches(false);
             conn.setFixedLengthStreamingMode(bytes.length);
             conn.setRequestMethod("POST");
-            conn.setRequestProperty("user-agent", "Pushjet-android");
+            conn.setRequestProperty("user-agent", "Pushfish-android");
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
             // post the request
             OutputStream out = conn.getOutputStream();
@@ -81,7 +81,7 @@ public class HttpUtil {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try {
             HttpGet httpget = new HttpGet(endpoint + "?" + urlencode(data));
-            httpget.setHeader("user-agent", "Pushjet-android");
+            httpget.setHeader("user-agent", "Pushfish-android");
             HttpResponse response = (new DefaultHttpClient()).execute(httpget);
             StatusLine statusLine = response.getStatusLine();
             if (statusLine.getStatusCode() != HttpStatus.SC_OK) {
@@ -98,7 +98,7 @@ public class HttpUtil {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try {
             HttpDelete httpDelete = new HttpDelete(endpoint + "?" + urlencode(data));
-            httpDelete.setHeader("user-agent", "Pushjet-android");
+            httpDelete.setHeader("user-agent", "Pushfish-android");
             HttpResponse response = (new DefaultHttpClient()).execute(httpDelete);
             StatusLine statusLine = response.getStatusLine();
             if (statusLine.getStatusCode() != HttpStatus.SC_OK) {
