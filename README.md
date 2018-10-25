@@ -1,8 +1,9 @@
-The Pushfish Android Client [![Circle CI](https://circleci.com/gh/Pushjet/Pushjet-Android.svg?style=svg)](https://circleci.com/gh/Pushjet/Pushjet-Android) [![License](http://img.shields.io/badge/license-BSD-blue.svg?style=flat)](/LICENSE)
+The Pushfish Android Client [![License](http://img.shields.io/badge/license-BSD-blue.svg?style=flat)](/LICENSE)
 ==========================
-This is the pushfish android client. It currently uses google GCM to send and receive messages. This means 
-that any message that is directed at the android client *will* go through google. The client is licensed 
+This is the pushfish android client. It's using MQTT to communicate with the server. The client is licensed 
 under [BSD 2 clause][1] just like the rest of the project.
+
+This is based on ![Pushjet](https://github.com/Pushjet/Pushjet-Android)
 
 ![Download latest apk](https://gitlab.com/PushFish/PushFish-Android/-/jobs/artifacts/master/raw/app/build/outputs/apk/app-debug.apk?job=build)
 ## Permissions explained
