@@ -76,8 +76,8 @@ public class PushListActivity extends ListActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        registerReceiver(receiver, new IntentFilter("PushjetMessageRefresh"));
-        registerReceiver(receiver, new IntentFilter("PushjetIconDownloaded"));
+        registerReceiver(receiver, new IntentFilter("PushfishMessageRefresh"));
+        registerReceiver(receiver, new IntentFilter("PushfishIconDownloaded"));
     }
 
     @Override
@@ -152,7 +152,7 @@ public class PushListActivity extends ListActivity {
             public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
                 PushfishMessage message = (PushfishMessage) adapter.getItem(position);
 
-                MiscUtil.WriteToClipboard(message.getMessage(), "Pushjet message", getApplicationContext());
+                MiscUtil.WriteToClipboard(message.getMessage(), "Pushfish message", getApplicationContext());
                 Toast.makeText(getApplicationContext(), "Copied message to clipboard", Toast.LENGTH_SHORT).show();
                 return true;
             }

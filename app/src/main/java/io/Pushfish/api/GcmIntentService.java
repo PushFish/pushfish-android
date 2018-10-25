@@ -64,11 +64,11 @@ public class GcmIntentService extends IntentService {
                 db.addMessage(msg);
                 sendNotification(msg);
             } catch (JSONException ignore) {
-                Log.e("PushjetJson", ignore.getMessage());
+                Log.e("PushfishJson", ignore.getMessage());
             }
         }
         GcmBroadcastReceiver.completeWakefulIntent(intent);
-        sendBroadcast(new Intent("PushjetMessageRefresh"));
+        sendBroadcast(new Intent("PushfishMessageRefresh"));
     }
 
     private void sendNotification(PushfishMessage msg) {
