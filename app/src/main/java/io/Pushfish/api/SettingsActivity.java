@@ -15,7 +15,6 @@ import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 
-import io.Pushfish.api.Async.GCMRegistrar;
 import io.Pushfish.api.Async.RefreshServiceAsync;
 import io.Pushfish.api.PushfishApi.PushfishApi;
 
@@ -71,13 +70,8 @@ public class SettingsActivity extends PreferenceActivity {
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        GCMRegistrar gcm = new GCMRegistrar(context);
-
-                        gcm.forgetRegistration();
                         db.truncateMessages();
                         db.truncateServices();
-                        gcm.registerInBackground(true);
-
                         PushfishApi api = new PushfishApi(context, getRegisterUrl(context));
                         new RefreshServiceAsync(api, db).execute();
 

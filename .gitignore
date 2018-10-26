@@ -26,3 +26,8 @@ local.properties
 proguard/
 # Log Files
 *.log
+pushfish-android.iml
+/pushfish-android.iml
+/app/app.iml
+/pushjet-android.iml
+/Pushjet-Android.iml

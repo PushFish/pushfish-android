@@ -44,18 +44,6 @@
                 android:value="io.Pushfish.api.PushListActivity" />
         </activity>
 
-        <receiver
-            android:name="io.Pushfish.api.GcmBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND" >
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-
-                <category android:name="io.Pushfish.api" />
-            </intent-filter>
-        </receiver>
-
-        <service android:name="io.Pushfish.api.GcmIntentService" />
-
         <activity
             android:name="io.Pushfish.api.SettingsActivity"
             android:label="@string/title_activity_settings"
