@@ -20,7 +20,7 @@ public class PushfishApi {
     private Context context;
 
     public PushfishApi(Context context) {
-        this(context, "http://api.pushjet.io");
+        this(context, "https://api.push.fish");
     }
 
     public PushfishApi(Context context, String url) {
