@@ -29,7 +29,7 @@ public class SettingsActivity extends PreferenceActivity {
      * shown on tablets.
      */
     private static final boolean ALWAYS_SIMPLE_PREFS = false;
-    private static final String DEFAULT_PUSHFISH_GCM_REGISTER_URL = "https://api.pushjet.io";
+    private static final String DEFAULT_PUSHFISH_GCM_REGISTER_URL = "https://api.push.fish";
     private static final String DEFAULT_SENDER_ID = "509878466986";
 
     private static Preference.OnPreferenceClickListener sBindOnPreferenceClickListener = new Preference.OnPreferenceClickListener() {

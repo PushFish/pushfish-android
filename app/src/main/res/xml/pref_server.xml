@@ -11,7 +11,7 @@
         android:dependency="server_use_custom"
         android:key="server_custom_url"
         android:title="@string/pref_server_custom_url"
-        android:defaultValue="https://api.pushjet.io"
+        android:defaultValue="https://api.push.fish"
         android:selectAllOnFocus="true"
         android:singleLine="true"
         android:maxLines="1"
