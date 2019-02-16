@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Pushfish</string>
+    <string name="app_name">PushFish</string>
     <string name="action_subscriptions">Subscriptions</string>
     <string name="title_activity_subscriptions">Subscriptions</string>
     <string name="action_new">New</string>
@@ -18,7 +18,7 @@
 
     <string name="pref_header_server">Custom Server</string>
     <string name="pref_header_general">General Settings</string>
-    <string name="perf_server_use_custom">Use custom server</string>
+    <string name="pref_server_use_custom">Use custom server</string>
     <string name="pref_server_custom_url">Server URL</string>
     <string name="pref_server_custom_sender_id">Custom Sender ID</string>
     <string name="pref_general_reset">Delete all notifications</string>
@@ -29,6 +29,6 @@
     <string name="pref_general_encrypt_gcm_summary">Encrypt messages between the device and the server. This makes it impossible for Google to read your messages. Changing this requires you to re-register to the server to take effect.</string>
 
     <string name="pushfish_announce_service">046d-71edff-198c7108954c-7f8c9-c0943b03f</string>
-    <string name="pushfish_welcome_title">Welcome to pushfish!</string>
-    <string name="pushfish_welcome_message">Tap me to expand! Welcome to Pushfish. To start using pushfish you\'ll need to add a service.</string>
+    <string name="pushfish_welcome_title">Welcome to PushFish!</string>
+    <string name="pushfish_welcome_message">Tap me to expand! Welcome to PushFish. To start using PushFish you\'ll need to add a service.</string>
 </resources>

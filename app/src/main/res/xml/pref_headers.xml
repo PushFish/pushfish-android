@@ -3,11 +3,11 @@
     <!-- These settings headers are only used on tablets. -->
 
     <header
-        android:fragment="io.Pushfish.api.SettingsActivity$GeneralPreferenceFragment"
+        android:fragment="fish.push.api.SettingsActivity$GeneralPreferenceFragment"
         android:title="@string/pref_header_general" />
 
     <header
-        android:fragment="io.Pushfish.api.SettingsActivity$ServerPreferenceFragment"
+        android:fragment="fish.push.api.SettingsActivity$ServerPreferenceFragment"
         android:title="@string/pref_header_server" />
 
 </preference-headers>

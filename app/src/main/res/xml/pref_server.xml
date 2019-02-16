@@ -3,7 +3,7 @@
     <!-- Use the custom server? -->
     <CheckBoxPreference
         android:key="server_use_custom"
-        android:title="@string/perf_server_use_custom"
+        android:title="@string/pref_server_use_custom"
         android:summary="@string/pref_server_use_custom_summary"
         android:defaultValue="false" />
 
@@ -11,7 +11,7 @@
         android:dependency="server_use_custom"
         android:key="server_custom_url"
         android:title="@string/pref_server_custom_url"
-        android:defaultValue="https://api.pushjet.io"
+        android:defaultValue="https://api.push.fish"
         android:selectAllOnFocus="true"
         android:singleLine="true"
         android:maxLines="1"
