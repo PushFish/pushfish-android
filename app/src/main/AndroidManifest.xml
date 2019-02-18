@@ -12,6 +12,8 @@
 
     <permission android:name="fish.push.api.permission.C2D_MESSAGE" android:protectionLevel="signature" />
     <uses-permission android:name="fish.push.api.permission.C2D_MESSAGE" />
+    <uses-feature android:name="android.hardware.camera2" android:required="false"/>
+
 
     <application
         android:allowBackup="false"
@@ -19,21 +21,17 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="io.Pushfish.api.PushListActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" >
-
+            android:name=".PushListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <activity
-            android:name="io.Pushfish.api.SubscriptionsActivity"
+            android:name=".SubscriptionsActivity"
             android:label="@string/title_activity_subscriptions"
-            android:parentActivityName="io.Pushfish.api.PushListActivity" >
+            android:parentActivityName=".PushListActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -45,26 +43,31 @@
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="io.Pushfish.api.PushListActivity" />
+                android:value=".PushListActivity" />
         </activity>
 
         <activity
-            android:name="io.Pushfish.api.SettingsActivity"
+            android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
             android:theme="@style/SettingsTheme"
-            android:parentActivityName="io.Pushfish.api.PushListActivity" >
+            android:parentActivityName="fish.push.api.PushListActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="io.Pushfish.api.PushListActivity" />
+                android:value="fish.push.api.PushListActivity" />
         </activity>
-
-        <service android:name=".service.WebSocketService" />
 
         <receiver android:name="fish.push.api.Receiver">
             <intent-filter>
                 <action android:name="android.intent.action.RECEIVE" />
             </intent-filter>
         </receiver>
+<!-- The following activities/providers/receivers/services are untested but potentially necessary-->
+        <!--<service android:name=".service.WebSocketService" />-->
+        <!--<receiver android:name=".init.BootCompletedReceiver">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.BOOT_COMPLETED" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
 
     </application>
 

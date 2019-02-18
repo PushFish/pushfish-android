@@ -30,18 +30,18 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.google.zxing.qrcode.QRCodeWriter;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import fish.push.api.Async.AddServiceAsync;
 import fish.push.api.Async.DeleteServiceAsync;
 import fish.push.api.Async.GenericAsyncCallback;
 import fish.push.api.Async.RefreshServiceAsync;
 import fish.push.api.Async.RefreshServiceCallback;
 import fish.push.api.PushfishApi.PushfishApi;
-import fish.push.api.PushfishApi.PushfishService;
 import fish.push.api.PushfishApi.PushfishException;
+import fish.push.api.PushfishApi.PushfishService;
 import fish.push.api.PushfishApi.PushfishUri;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class SubscriptionsActivity extends ListActivity {
     private fish.push.api.PushfishApi.PushfishApi api;
@@ -239,7 +239,7 @@ public class SubscriptionsActivity extends ListActivity {
             }
         }
         if (!PushfishUri.isValidToken(token))
-            throw new PushfishException("Invalid service id", 2);
+            throw new PushfishException("Invalid MQTT topic.", 2);
 
         AddServiceAsync addServiceAsync = new AddServiceAsync(api, db, adapter);
         addServiceAsync.execute(token);

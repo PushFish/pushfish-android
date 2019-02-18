@@ -2,8 +2,6 @@ package fish.push.api.PushfishApi;
 
 import android.content.Context;
 
-import fish.push.api.HttpUtil;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,6 +11,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import fish.push.api.HttpUtil;
+
 public class PushfishApi {
     private String baseurl;
     private int lastCheck = 0;
@@ -20,12 +20,12 @@ public class PushfishApi {
     private Context context;
 
     public PushfishApi(Context context) {
-        this(context, "http://api.pushjet.io");
+        this(context, "http://api.push.fish");
     }
 
     public PushfishApi(Context context, String url) {
-        this.baseurl = url;
         this.context = context;
+        this.baseurl = url;
         this.uuid = (new DeviceUuidFactory(context)).getDeviceUuid().toString();
     }
 

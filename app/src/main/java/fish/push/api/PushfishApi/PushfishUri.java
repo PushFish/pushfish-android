@@ -18,7 +18,7 @@ public class PushfishUri {
     public static String tokenFromUri(String uri) throws PushfishException {
         if (!isValidToken(uri))
             // Error #2 is the invalid service token error
-            throw new PushfishException("Invalid service uri.", 2);
+            throw new PushfishException("Invalid MQTT URI.", 2);
 
         return Pattern.compile(reUri).matcher(uri).group(2);
     }

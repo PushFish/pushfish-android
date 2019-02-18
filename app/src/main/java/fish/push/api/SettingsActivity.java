@@ -19,6 +19,7 @@ import java.util.List;
 
 import fish.push.api.Async.RefreshServiceAsync;
 import fish.push.api.PushfishApi.PushfishApi;
+import fish.push.api.PushfishApi.PushfishUri;
 
 public class SettingsActivity extends PreferenceActivity {
     /**
@@ -163,8 +164,11 @@ public class SettingsActivity extends PreferenceActivity {
         boolean useCustom = preferences.getBoolean("server_use_custom", false);
 
         if (useCustom) {
-            String url = preferences.getString("server_custom_url", DEFAULT_PUSHFISH_REGISTER_URL);
-            return url.replaceAll("/+$", "");
+            String uri = preferences.getString("server_custom_url", DEFAULT_PUSHFISH_REGISTER_URL);
+            if (!PushfishUri.isValidUri(uri))
+                return uri.replaceAll("/+$", "");
+            return DEFAULT_PUSHFISH_REGISTER_URL;
+
         } else {
             return DEFAULT_PUSHFISH_REGISTER_URL;
         }

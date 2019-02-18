@@ -42,6 +42,7 @@ public class PushListActivity extends ListActivity {
     private BroadcastReceiver receiver;
     private SwipeRefreshLayout refreshLayout;
     private MqttAsyncClient mqttClient;
+    private MqttConnectOptions mqttOptions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +105,9 @@ public class PushListActivity extends ListActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.push_list, menu);
+        for (int i = 0; i < menu.size(); i++) {
+            menu.getItem(i).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        }
         return true;
     }
 
@@ -161,9 +165,10 @@ public class PushListActivity extends ListActivity {
 
     private void configureMessaging() {
         try {
+            constructConnectionOptions();
             configureMqttClient();
             subscribeToMqttTopic();
-            mqttClient.connect(constructConnectionOtions());
+            mqttClient.connect(mqttOptions);
         } catch (MqttException e) {
             e.printStackTrace();
         }
@@ -217,12 +222,11 @@ public class PushListActivity extends ListActivity {
                         .concat("\n Message: ".concat(message.toString())));
     }
 
-    private MqttConnectOptions constructConnectionOtions() {
-        MqttConnectOptions options = new MqttConnectOptions();
-        options.setMqttVersion(3);
-        options.setCleanSession(true);
-        options.setKeepAliveInterval(60);
-        return options;
+    private void constructConnectionOptions() {
+        mqttOptions = new MqttConnectOptions();
+        mqttOptions.setMqttVersion(3);
+        mqttOptions.setCleanSession(true);
+        mqttOptions.setKeepAliveInterval(60);
     }
 
     private void configureBroadcastReceiver() {
