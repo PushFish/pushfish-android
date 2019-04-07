@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import fish.push.api.PushfishApi.PushfishMessage;
+import fish.push.api.API.PushfishMessage;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -119,7 +119,7 @@ public class PushListAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public void upDateEntries(ArrayList<PushfishMessage> entries) {
+    public void updateEntries(ArrayList<PushfishMessage> entries) {
         Collections.reverse(entries);
         this.entries = entries;
         notifyDataSetChanged();

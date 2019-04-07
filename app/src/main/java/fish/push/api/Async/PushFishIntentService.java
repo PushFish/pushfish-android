@@ -1,4 +1,4 @@
-package fish.push.api;
+package fish.push.api.Async;
 
 import android.annotation.TargetApi;
 import android.app.IntentService;
@@ -12,11 +12,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-
-import fish.push.api.PushfishApi.PushfishService;
-import fish.push.api.PushfishApi.PushfishMessage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,12 +20,20 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.Date;
 
+import androidx.core.app.NotificationCompat;
+import fish.push.api.API.PushfishMessage;
+import fish.push.api.API.PushfishService;
+import fish.push.api.DatabaseHandler;
+import fish.push.api.MiscUtil;
+import fish.push.api.pushfish.PushFishActivity;
+import fish.push.api.R;
 
-public class PushfishIntentService extends IntentService{
+
+public class PushFishIntentService extends IntentService{
     private static int NOTIFICATION_ID = 0;
 
-    public PushfishIntentService() {
-        super("PushfishIntentService");
+    public PushFishIntentService() {
+        super("PushFishIntentService");
     }
 
     @Override
@@ -75,7 +79,7 @@ public class PushfishIntentService extends IntentService{
         NotificationManager mNotificationManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        Intent intent = new Intent(this, PushListActivity.class);
+        Intent intent = new Intent(this, PushFishActivity.class);
         if (msg.hasLink()) {
             try {
                 intent = new Intent(Intent.ACTION_VIEW, Uri.parse(msg.getLink()));

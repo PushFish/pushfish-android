@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <resources>
+    <color name="actionBarText">#FFFFFF</color>
     <color name="colorPrimary">#7055FE</color>
     <color name="colorPrimaryDark">#4827C5</color>
-    <color name="colorPrimaryText">#000000</color>
+    <color name="colorPrimaryText">#FFF</color>
+    <color name="colorAccent">#8E82DA</color>
     <color name="icons">#434343</color>
 </resources>

@@ -6,15 +6,15 @@ import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import java.util.Date;
+
+import fish.push.api.API.PushfishApi;
+import fish.push.api.API.PushfishException;
+import fish.push.api.API.PushfishMessage;
+import fish.push.api.API.PushfishService;
 import fish.push.api.DatabaseHandler;
-import fish.push.api.PushfishApi.PushfishApi;
-import fish.push.api.PushfishApi.PushfishService;
-import fish.push.api.PushfishApi.PushfishException;
-import fish.push.api.PushfishApi.PushfishMessage;
 import fish.push.api.R;
 import fish.push.api.SettingsActivity;
-
-import java.util.Date;
 
 public class FirstLaunchAsync extends AsyncTask<Context, Void, Void> {
 

@@ -1,6 +1,6 @@
 package fish.push.api.Async;
 
-import fish.push.api.PushfishApi.PushfishMessage;
+import fish.push.api.API.PushfishMessage;
 
 import java.util.ArrayList;
 

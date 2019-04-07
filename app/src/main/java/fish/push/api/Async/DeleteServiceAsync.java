@@ -4,9 +4,9 @@ package fish.push.api.Async;
 import android.os.AsyncTask;
 
 import fish.push.api.DatabaseHandler;
-import fish.push.api.PushfishApi.PushfishApi;
-import fish.push.api.PushfishApi.PushfishException;
-import fish.push.api.PushfishApi.PushfishService;
+import fish.push.api.API.PushfishApi;
+import fish.push.api.API.PushfishException;
+import fish.push.api.API.PushfishService;
 
 public class DeleteServiceAsync extends AsyncTask<PushfishService, Void, Void> {
     private DatabaseHandler db;

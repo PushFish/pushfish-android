@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fish.push.api.MiscUtil;
-import fish.push.api.PushfishApi.PushfishService;
+import fish.push.api.API.PushfishService;
 
 public class DownloadServiceLogoAsync extends AsyncTask<PushfishService, Void, Map<String, byte[]>> {
     private Context context;

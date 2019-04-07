@@ -1,4 +1,4 @@
-package fish.push.api.PushfishApi;
+package fish.push.api.API;
 
 public class PushfishException extends Exception {
     public int code;

@@ -18,8 +18,8 @@ import android.preference.PreferenceManager;
 import java.util.List;
 
 import fish.push.api.Async.RefreshServiceAsync;
-import fish.push.api.PushfishApi.PushfishApi;
-import fish.push.api.PushfishApi.PushfishUri;
+import fish.push.api.API.PushfishApi;
+import fish.push.api.API.PushfishUri;
 
 public class SettingsActivity extends PreferenceActivity {
     /**

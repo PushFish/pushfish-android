@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.InputType;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -33,18 +32,19 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import fish.push.api.API.PushfishApi;
+import fish.push.api.API.PushfishException;
+import fish.push.api.API.PushfishService;
+import fish.push.api.API.PushfishUri;
 import fish.push.api.Async.AddServiceAsync;
 import fish.push.api.Async.DeleteServiceAsync;
 import fish.push.api.Async.GenericAsyncCallback;
 import fish.push.api.Async.RefreshServiceAsync;
 import fish.push.api.Async.RefreshServiceCallback;
-import fish.push.api.PushfishApi.PushfishApi;
-import fish.push.api.PushfishApi.PushfishException;
-import fish.push.api.PushfishApi.PushfishService;
-import fish.push.api.PushfishApi.PushfishUri;
 
 public class SubscriptionsActivity extends ListActivity {
-    private fish.push.api.PushfishApi.PushfishApi api;
+    private fish.push.api.API.PushfishApi api;
     private DatabaseHandler db;
     private SubscriptionsAdapter adapter;
     private BroadcastReceiver receiver;

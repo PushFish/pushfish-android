@@ -1,4 +1,4 @@
-package fish.push.api.PushfishApi;
+package fish.push.api.API;
 
 import java.util.Date;
 import java.util.TimeZone;

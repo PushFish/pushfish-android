@@ -8,9 +8,9 @@ import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import fish.push.api.PushfishApi.PushfishService;
-import fish.push.api.PushfishApi.PushfishException;
-import fish.push.api.PushfishApi.PushfishMessage;
+import fish.push.api.API.PushfishService;
+import fish.push.api.API.PushfishException;
+import fish.push.api.API.PushfishMessage;
 
 import java.util.ArrayList;
 import java.util.Date;

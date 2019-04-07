@@ -1,4 +1,4 @@
-<android.support.v4.widget.SwipeRefreshLayout
+<androidx.core.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swipe_container"
@@ -11,4 +11,4 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent">
     </ListView>
-</android.support.v4.widget.SwipeRefreshLayout>
+</androidx.core.widget.SwipeRefreshLayout>

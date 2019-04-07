@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import fish.push.api.PushfishApi.PushfishService;
+import fish.push.api.API.PushfishService;
 
 import java.util.ArrayList;
 import java.util.Collections;
