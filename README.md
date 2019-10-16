@@ -5,16 +5,13 @@ under [BSD 2 clause][1] just like the rest of the project.
 
 This is based on ![Pushjet](https://github.com/Pushjet/Pushjet-Android)
 
-![Download latest apk](https://gitlab.com/PushFish/PushFish-Android/-/jobs/artifacts/master/raw/app/build/outputs/apk/app-debug.apk?job=build)
+![Download the latest apk](https://gitlab.com/PushFish/PushFish-Android/-/jobs/artifacts/master/raw/app/build/outputs/apk/app-debug.apk?job=build)
 ## Permissions explained
-The [permissions][4] used by Pushfish might seem a bit broad but they all have a reason:
+The [permissions][4] used by PushFish might seem a bit broad but they all have a reason:
 
- - Read phone status and identity:
-  - This is needed [to generate the device uuid ][5] that authenticates the device with the server.
- - Take pictures and videos:
-  - This is needed to make sure we can scan QR codes to register new services.
- - Control flashlight/vibration and prevent phone from sleeping:
-  - This makes sure we can receive notifications.
+ - Read phone status and identity: This is needed [to generate the device UUID ][5] that authenticates the device with the server.
+ - Take pictures and videos: This is needed to make sure we can scan QR codes to register new services.
+ - Control flashlight/vibration and prevent phone from sleeping: This makes sure we can receive notifications.
 
 ## Screenshots
 ![Pushfish push listing material][6] ![Pushfish push listing][2] ![Subscriptions][3]
